@@ -1,7 +1,22 @@
 {
-  "name": "Game",
+  "name": "Robots battle",
   "version": "0.0.1",
-  "description": "Very interesting game.",
+  "description": "Game applies to shooting arcade class. Represents online-game with 
+                  two or more users that can shoot to each other, pick up some power ups, etc...
+                  The game's client and server is written only on Javascript programming language.",
+  "author": "Nikolay Zamulov <zamulov8@gmail.com>",
+  "keywords": [
+    "install",
+    "modules",
+    "package.json",
+    "game",
+    "robots",
+    "battle"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ZamNick/Game"
+  },
   "dependencies": {
     "socket.io": "latest",
     "express": "latest"
@@ -9,5 +24,15 @@
   "engines": {
   	"node": "0.12.x",
   	"npm": "2.11.x"
-  }
+  },
+  "scripts": {
+    "postinstall": "bower install"
+  },
+  "main": "./public/js/main.js",
+  "licenses": [
+    {
+      "name": "MIT",
+      "url": "http://www.opensource.org/licenses/mit-license.php"
+    }
+  ]
 }
