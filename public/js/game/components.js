@@ -56,8 +56,14 @@ Crafty.c('HealthBar', {
 					this.addComponent('bar3');
 				}
 
-				this.crop(0, 0, this.health, 5);
+				if(this.health > 0) {
+					this.crop(0, 0, this.health, 5);
+				} else {
 
+					// Firefox and IE cannot draw picture with 0px width.
+					this.x = -100;
+					this.y = -100;
+				}
 			});
 
 
@@ -101,7 +107,15 @@ Crafty.c('AmmunitionBar', {
 	__init: function(x, y, ammunition) {
 		this.addComponent('2D, Canvas, Sprite, ammunition')
 			.bind('EnterFrame', function() {
-				this.crop(0, 0, this.ammunition, 5);
+
+				if(this.ammunition > 0) {
+					this.crop(0, 0, this.ammunition, 5);
+				} else {
+
+					// Firefox and IE cannot draw picture with 0px width.
+					this.x = -100;
+					this.y = -100;
+				}
 			});
 
 
