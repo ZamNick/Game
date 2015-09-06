@@ -1,9 +1,7 @@
 {
-  "name": "Robots battle",
+  "name": "RobotsBattle",
   "version": "0.0.1",
-  "description": "Game applies to shooting arcade class. Represents online-game with 
-                  two or more users that can shoot to each other, pick up some power ups, etc...
-                  The game's client and server is written only on Javascript programming language.",
+  "description": "Game applies to shooting arcade class. Represents online-game with two or more users that can shoot to each other, pick up some power ups, etc... The game's client and server is written only on Javascript programming language.",
   "author": "Nikolay Zamulov <zamulov8@gmail.com>",
   "keywords": [
     "install",
