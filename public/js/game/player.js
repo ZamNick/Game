@@ -71,14 +71,7 @@ Crafty.c("Player", {
 			      this.down = true;
 			    }
 
-			    if(undefined !== socket) {
-				    socket.emit('updatePlayerDirection', {
-				    	id: gameId,
-				    	name: this.name,
-				    	command: 'add',
-				    	direction: direction
-				    });
-				}
+				this.trigger('updatePlayerDirection', { command: 'add', direction: direction });
 			})
 			.bind('KeyUp', function(e) {
 
@@ -98,14 +91,7 @@ Crafty.c("Player", {
 			      this.down = false;
 			    }
 
-			    if(undefined !== socket) {
-				    socket.emit('updatePlayerDirection', {
-				    	id: gameId,
-				    	name: this.name,
-				    	command: 'delete',
-				    	direction: direction
-				    });
-				}
+			    this.trigger('updatePlayerDirection', { command: 'delete', direction: direction });
 			})
 			.bind('EnterFrame', function(frame) {
 				if(frame.frame % this.weapon.firerate == 0) {
@@ -146,6 +132,16 @@ Crafty.c("Player", {
 						powerUpId: powerUpId,
 						name: this.name
 					});
+				}
+			})
+			.bind('updatePlayerDirection', function(data) {
+				if(undefined !== socket) {
+				    socket.emit('updatePlayerDirection', {
+				    	id: gameId,
+				    	name: this.name,
+				    	command: data.command,
+				    	direction: data.direction
+				    });
 				}
 			})
 			.bind('changeRobotNamePosition', function() {
