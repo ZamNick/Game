@@ -1,0 +1,8 @@
+{
+  "name": "Game",
+  "version": "0.0.1",
+  "description": "Very interesting game.",
+  "dependencies": {
+    "crafty": "~0.6.3"
+  }
+}

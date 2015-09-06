@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8" />
+	<link rel="stylesheet" type="text/css" href="public/css/style.css">
+
+	<script src="http://localhost:8888/socket.io/socket.io.js"></script>
+
+	<script type="text/javascript" src="public/bower_components/crafty/dist/crafty.js"></script>
+
+	<script type="text/javascript" src="public/js/game/sprites.js"></script>
+	<script type="text/javascript" src="public/js/game/effects.js"></script>
+	<script type="text/javascript" src="public/js/game/powerup.js"></script>
+	<script type="text/javascript" src="public/js/game/components.js"></script>
+	<script type="text/javascript" src="public/js/game/weapon.js"></script>
+	<script type="text/javascript" src="public/js/game/scenes.js"></script>
+	<script type="text/javascript" src="public/js/game/player.js"></script>
+	<script type="text/javascript" src="public/js/game/game.js"></script>
+
+	<script type="text/javascript" src="public/js/utilites/scroll.js"></script>
+	<script type="text/javascript" src="public/js/utilites/wheelEventListener.js"></script>
+
+	<script type="text/javascript" src="public/js/chat/chat.js"></script>
+
+	<script type="text/javascript" src="public/js/main.js"></script>
+	
+	<title>Game</title>
+</head>
+<body>
+	<div id="start-menu">
+		<div id="start-menu-header">
+			<label class="menu-label">Start Menu</label>
+		</div>
+		<div id="start-menu-personal">
+			<label class="menu-label">Name: </label>
+			<input type="text" id="start-menu-input" class="menu" maxlength="20">
+		</div>
+		<div id="start-menu-error"></div>
+		<div id="start-menu-navigation">
+			<div class="button" id="start-menu-start-game-with-bot-button">Play with Bot</div>
+			<div class="button" id="start-menu-start-game-with-user-button">Play with User</div>
+		</div>
+		<div id="start-menu-footer">
+			Game ©, 2015. <br />
+			Nickolay Zamulov, Minsk, Belarus.
+		</div>
+	</div>
+	<div id="play-with-user-menu">
+		<label class="menu-label">Available games: </label>
+		<div id="play-with-user-menu-available-games-wrapper">
+			<ul id="play-with-user-menu-available-games"></ul>
+		</div>
+		<div id="play-with-user-menu-scroll-bar">
+			<div id="play-with-user-menu-scroll"></div>
+		</div>
+		<div id="play-with-user-menu-error"></div>
+		<div id="play-with-user-menu-navigation">
+			<div class="button" id="play-with-user-menu-join-button">Join game</div>
+			<div class="button" id="play-with-user-menu-create-game-button">Create game</div>
+			<div class="button" id="play-with-user-menu-return-back-button">Return back</div>
+		</div>
+	</div>
+	<div id="create-game-menu">
+		<label class="menu-label">Name of game: </label>
+		<input type="text" id="create-game-menu-input" class="menu" maxlength="20">
+		<div id="create-game-menu-error"></div>
+		<div id="create-game-menu-navigation">
+			<div class="button" id="create-game-menu-create-game-button">Create game</div>
+			<div class="button" id="create-game-menu-return-back-button">Return back</div>
+		</div>
+	</div>
+	<div id="room-menu">
+		<div id="room-menu-navigation">
+			<div class="button" id="room-menu-start-game-button">Start game</div>
+			<div class="button" id="room-menu-return-back-button">Return back</div>
+		</div>
+		<label id="room-menu-label">Members: </label>
+		<ul id="room-menu-members"></ul>
+		<div id="room-menu-chat-area">
+			<div id="room-menu-text-area-wrapper">
+				<ul id="room-menu-text-area">
+				</ul>
+			</div>
+		</div>
+		<div id="room-menu-scroll-bar">
+			<div id="room-menu-scroll"></div>
+		</div>
+		<input type="text" class="message" id="room-menu-message" name="message">
+	</div>
+	<div id="end-game-menu">
+		<div id="end-game-menu-result"></div>
+		<div class="button" id="end-game-menu-return-back-button"></div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,386 @@
+* {
+	margin: 0px;
+	padding: 0px;
+	background: black;
+}
+
+.menu-label {
+	font-size: 20px;
+	color: rgb(230, 219, 116);
+	background: rgb(64, 64, 61);
+}
+
+input.menu[type="text"] {
+	background: black;
+	color: rgb(249, 38, 114);
+	height: 30px;
+	border-radius: 20px;
+	font-weight: bold;
+	text-align: center;
+}
+
+input.menu[type="text"]:focus {
+	outline: none;
+}
+
+#start-menu-personal {
+	background: rgb(64, 64, 61);
+}
+
+#start-menu-header {
+	width: 100px;
+	background: rgb(64, 64, 61);
+	margin-left: 90px;
+	margin-top: -5px;
+	padding-bottom: 20px;
+}
+
+#start-menu {
+	position: absolute;
+	width: 300px;
+	height: 230px;
+	border: 1px solid white;
+	border-radius: 10px;
+	top: 50%;
+	left: 50%;
+	margin-top: -200px;
+	margin-left: -150px;
+	padding-top: 20px;
+	padding-left: 20px;
+	background: rgb(64, 64, 61);
+}
+
+#start-menu-navigation {
+	background: rgb(64, 64, 61);
+	margin-top: 40px;
+}
+
+#start-menu-error {
+	background: rgb(64, 64, 61);
+	color: rgb(249, 38, 114);
+	font-weight: bold;
+	font-size: 15px;
+	margin-top: 10px;
+	margin-bottom: -12px;
+	width: 280px;
+	text-align: center;
+	border: 1px solid rgb(64, 64, 61);
+}
+
+.button {
+	display: inline;
+	border: 2px solid white;
+	background: rgb(64, 64, 61);
+	color: rgb(230, 219, 116);
+	padding: 10px;
+	border-radius: 20px;
+	font-size: 18px;
+	margin: 3px;
+}
+
+.button:hover {
+	background: rgb(23, 24, 20);
+}
+
+.button:active {
+	color: rgb(249, 38, 114);
+}
+
+#start-menu, #end-game-menu, #play-with-user-menu, #room-menu, #create-game-menu {
+	cursor: default;
+	/* Disable text selection */
+	-webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+#start-menu-footer {
+	border-top: 1px solid white;
+	background: rgb(64, 64, 61);
+	color: rgb(230, 219, 116);
+	margin-top: 30px;
+	width: 280px;
+	text-align: center;
+	padding-top: 10px;
+}
+
+
+
+/* Play with user menu section */
+
+
+
+#play-with-user-menu {
+	display: none;
+	position: absolute;
+	width: 400px;
+	height: 410px;
+	border: 1px solid white;
+	border-radius: 10px;
+	top: 50%;
+	left: 50%;
+	margin-top: -200px;
+	margin-left: -200px;
+	padding-top: 20px;
+	padding-left: 20px;
+	background: rgb(64, 64, 61);
+}
+
+#play-with-user-menu-available-games-wrapper {
+	position: absolute;
+	width: 370px;
+	height: 300px;
+	top: 44px;
+	left: 20px;
+	border: 1px solid white;
+	overflow: hidden;
+}
+
+#play-with-user-menu-available-games {
+	position: relative;
+	display: inline;
+	width: 370px;
+	height: 300px;
+}
+
+.play-with-user-menu-li {
+	position: relative;
+	display: inline-block;
+	color: rgb(249, 38, 114);
+	width: 370px;
+	font-weight: bold;
+}
+
+#play-with-user-menu-navigation {
+	background: rgb(64, 64, 61);
+	margin-top: 330px;
+	margin-left: 15px;
+}
+
+#play-with-user-menu-error {
+	position: relative;
+	top: 300px;
+	background: rgb(64, 64, 61);
+	color: rgb(249, 38, 114);
+	font-weight: bold;
+	font-size: 15px;
+	margin-top: 10px;
+	margin-bottom: -12px;
+	width: 380px;
+	text-align: center;
+	border: 1px solid rgb(64, 64, 61);
+}
+
+#play-with-user-menu-scroll-bar {
+	position: absolute;
+	left: 391px;
+	height: 300px;
+	width: 10px;
+	top: 44px;
+	border: 1px solid white;
+}
+
+#play-with-user-menu-scroll {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	border-radius: 5px;
+	background: rgb(230, 219, 116);
+	width: 10px;
+}
+
+
+/* Create game menu section */
+
+
+
+#create-game-menu {
+	display: none;
+	position: absolute;
+	width: 300px;
+	height: 170px;
+	border: 1px solid white;
+	border-radius: 10px;
+	top: 50%;
+	left: 50%;
+	margin-top: -200px;
+	margin-left: -115px;
+	padding-top: 20px;
+	padding-left: 20px;
+	background: rgb(64, 64, 61);
+}
+
+#create-game-menu-navigation {
+	background: rgb(64, 64, 61);
+	margin-top: 40px;
+	margin-left: 20px;
+}
+
+#create-game-menu-input {
+	margin-top: 5px;
+	width: 280px;
+}
+
+#create-game-menu-error {
+	background: rgb(64, 64, 61);
+	color: rgb(249, 38, 114);
+	font-weight: bold;
+	font-size: 15px;
+	margin-top: 10px;
+	margin-bottom: -12px;
+	width: 280px;
+	text-align: center;
+	border: 1px solid rgb(64, 64, 61);
+}
+
+
+
+/* Room menu section */
+
+
+
+#room-menu {
+	display: none;
+	position: absolute;
+	width: 500px;
+	height: 500px;
+	border: 1px solid white;
+	border-radius: 10px;
+	top: 50%;
+	left: 50%;
+	margin-top: -250px;
+	margin-left: -250px;
+	padding-top: 20px;
+	padding-left: 20px;
+	background: rgb(64, 64, 61);
+}
+
+#room-menu-navigation {
+	background: rgb(64, 64, 61);
+	margin-top: 112px;
+}
+
+#room-menu-members {
+	position: absolute;
+	border: 1px solid white;
+	height: 120px;
+	width: 100px;
+	left: 400px;
+	top: 40px;
+}
+
+#room-menu-members li {
+	position: relative;
+	display: inline-block;
+	color: rgb(249, 38, 114);
+	width: 100px;
+	font-weight: bold;
+}
+
+#room-menu-label {
+	position: absolute;
+	top: 20px;
+	left: 400px;
+	font-size: 15px;
+	color: rgb(230, 219, 116);
+	background: rgb(64, 64, 61);
+}
+
+#room-menu-chat-area {
+	position: absolute;
+	margin-top: 20px;
+	margin-left: 0px;
+	height: 300px;
+	width: 470px;
+	overflow: hidden;
+    -moz-user-select: none; 
+    -khtml-user-select: none; 
+    -webkit-user-select: none; 
+    -o-user-select: none;
+	cursor: default;
+}
+
+#room-menu-text-area-wrapper {
+	height: 300px;
+	width: 470px;
+	background: rgba(23, 24, 20, 0.4);
+}
+
+#room-menu-text-area {
+	position: relative;
+}
+
+#room-menu-text-area li {
+	background: rgba(23, 24, 20, 0.4);
+	color: rgb(249, 38, 114);
+}
+
+#room-menu-scroll-bar {
+	position: absolute;
+	top: 173px;
+	left: 491px;
+	background: rgb(23, 24, 20);
+	border-radius: 5px;
+	height: 300px;
+	width: 10px;
+}
+
+#room-menu-scroll {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	border-radius: 5px;
+	background: rgb(230, 219, 116);
+	width: 10px;
+}
+
+input.message[type=text] {
+	position: absolute;
+	top: 474px;
+	left: 20px;
+	background: rgb(23, 24, 20);
+	height: 18px;
+	width: 470px;
+	border: 0px;
+	color: white;
+	cursor: default;
+	text-indent: 3px;
+}
+
+input.message[type=text]:focus {
+	outline: 0px;
+}
+
+
+
+/* End game section */
+
+
+
+#end-game-menu {
+	display: none;
+}
+
+#end-game-menu-result {
+	position: absolute;
+	color: rgb(249, 38, 114);
+	font-size: 50px;
+	#border: 1px solid white;
+	top: 50%;
+	left: 50%;
+	height: 50px;
+	width: 220px;
+	margin-left: -110px;
+	margin-top: -25px;
+}
+
+#end-game-menu-return-back-button {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	margin-left: -70px;
+	margin-top: 50px;
+}

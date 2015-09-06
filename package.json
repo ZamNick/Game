@@ -1,0 +1,13 @@
+{
+  "name": "Game",
+  "version": "0.0.1",
+  "description": "Very interesting game.",
+  "dependencies": {
+    "socket.io": "latest",
+    "express": "latest"
+  },
+  "engines": {
+  	"node": "0.12.x",
+  	"npm": "2.11.x"
+  }
+}
