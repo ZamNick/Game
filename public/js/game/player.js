@@ -166,16 +166,6 @@ Crafty.c("Player", {
 					y: this.y - 25
 				});
 			})
-			.bind('changePlayerPosition', function() {
-				if(undefined !== socket) {
-					socket.emit('changePlayerPosition', {
-						id: gameId,
-						name: this.name,
-						x: this.x,
-						y: this.y
-					});
-				}
-			})
 			.bind('changeHealthBarValue', function() {
 				healthbar.attr({ health: this.health });
 			})

@@ -300,16 +300,6 @@ io.on('connection', function (socket) {
 
 
 	/**
-	 * Change player position and broadcast it other players.<br />
-	 **/
-	socket.on('changePlayerPosition', function(data) {
-		Games[data.id].changePlayerPosition(data);
-		io.in(data.id).emit('updatePlayersPositions', Games[data.id].getPlayersPositions());
-	});
-
-
-
-	/**
 	 * Change player rotation and broadcast it other players.<br />
 	 **/
 	socket.on('changePlayerRotation', function(data) {
