@@ -25,7 +25,6 @@ Game = {
 
 		// Initializing.
 	    Crafty.init(window.innerWidth, window.innerHeight);
-	    Crafty.background('black');
 
 	    if(document.getElementById('cr-stage')) {
 	    	document.getElementById('cr-stage').style.display = 'block';
@@ -33,6 +32,8 @@ Game = {
 
 	    // Start game.
 		Crafty.scene('Game', obj);
+
+		Crafty.canvas._canvas.style.background = "url('public/img/desert.png') repeat";
 	}
 
 
