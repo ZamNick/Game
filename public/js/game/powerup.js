@@ -40,7 +40,7 @@ Crafty.c('PowerUp', {
 /**
  * Power ups that increase your health.<br />
  **/
-Crafty.c('Heal', {
+Crafty.c('Health', {
 
 	effect: "RestoreHealth",
 

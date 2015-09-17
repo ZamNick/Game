@@ -264,7 +264,7 @@ var Game = function() {
 		newPowerUp.y = Math.floor(Math.random() * 800);
 		var type = Math.random();
 		if(type <= 0.5) {
-			newPowerUp.type = 'Heal';
+			newPowerUp.type = 'Health';
 			newPowerUp._w = 37;
 			newPowerUp._h = 34;
 		} else {
