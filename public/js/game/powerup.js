@@ -4,7 +4,7 @@
  * Power ups is a some object that increase your health or ammunition.<br />
  *
  * @author Nikolay Zamulov <zamulov8@gmail.com>
- * @version 1.0
+ * @version 0.0.2
  **/
 
 
@@ -55,7 +55,7 @@ Crafty.c('Heal', {
 	 * @return {Object}
 	 **/
 	init: function() {
-		this.addComponent('PowerUp, heal');
+		this.addComponent('PowerUp, health');
 	}
 });
 
@@ -79,6 +79,6 @@ Crafty.c('Ammunition', {
 	 * @return {Object}
 	 **/
 	init: function() {
-		this.addComponent('PowerUp, ammo');
+		this.addComponent('PowerUp, ammunition');
 	}
 });

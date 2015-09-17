@@ -2,7 +2,7 @@
  * Player object is represented in this file.<br />
  *
  * @author Nikolay Zamulov <zamulov8@gmail.com>
- * @version 0.0.1
+ * @version 0.0.2
  **/
 Crafty.c("Player", {
 
@@ -46,7 +46,7 @@ Crafty.c("Player", {
 	 **/
 	__init: function(x, y, name, gameId, socket) {
 
-		this.requires("2D, Canvas, robot1, Sprite, HealthBar, AmmunitionBar")
+		this.requires("2D, Canvas, robot_1, Sprite, HealthBar, AmmunitionBar")
 			.origin('center')
 
 			.bind('KeyDown', function(e) {

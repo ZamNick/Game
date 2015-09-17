@@ -2,7 +2,7 @@
  * All helpfull components of the game.<br />
  *
  * @author Nikolay Zamulov <zamulov8@gmail.com>
- * @version 0.0.1
+ * @version 0.0.2
  **/
 
 
@@ -35,25 +35,25 @@ Crafty.c('HealthBar', {
 		this.addComponent('2D, Canvas, Sprite')
 			.bind('EnterFrame', function() {
 
-				if(true === this.bar[0]) this.removeComponent('bar1');
-				if(true === this.bar[1]) this.removeComponent('bar2');
-				if(true === this.bar[2]) this.removeComponent('bar3');
+				if(true === this.bar[0]) this.removeComponent('health_bar_1');
+				if(true === this.bar[1]) this.removeComponent('health_bar_2');
+				if(true === this.bar[2]) this.removeComponent('health_bar_3');
 
 				if(this.health >= 75) {
 					this.bar[0] = true;
 					this.bar[1] = false;
 					this.bar[2] = false;
-					this.addComponent('bar1');
+					this.addComponent('health_bar_1');
 				} else if(this.health < 75 && this.health >= 35) {
 					this.bar[0] = false;
 					this.bar[1] = true;
 					this.bar[2] = false;
-					this.addComponent('bar2');
+					this.addComponent('health_bar_2');
 				} else {
 					this.bar[0] = false;
 					this.bar[1] = false;
 					this.bar[2] = true;
-					this.addComponent('bar3');
+					this.addComponent('health_bar_3');
 				}
 
 				if(this.health > 0) {
@@ -105,7 +105,7 @@ Crafty.c('AmmunitionBar', {
 	 * @return {Object}
 	 **/
 	__init: function(x, y, ammunition) {
-		this.addComponent('2D, Canvas, Sprite, ammunition')
+		this.addComponent('2D, Canvas, Sprite, ammunition_bar')
 			.bind('EnterFrame', function() {
 
 				if(this.ammunition > 0) {

@@ -5,7 +5,7 @@
  * to make several games in one time. At any time there is only one game.<br />
  *
  * @author Nikolay Zamulov <zamulov8@gmail.com>
- * @version 0.0.1
+ * @version 0.0.2
  **/
 Game = {
 

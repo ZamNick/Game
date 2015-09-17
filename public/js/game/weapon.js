@@ -40,7 +40,7 @@ Crafty.c("Weapon1", {
 	 * @public
 	 **/
 	init: function() {
-		this.addComponent("Bullet", "laser")
+		this.addComponent("Bullet", "laser_weapon_1")
 			.origin('center');
 	}
 });

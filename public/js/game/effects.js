@@ -2,7 +2,7 @@
  * All effects in the game.<br />
  *
  * @author Nikolay Zamulov <zamulov8@gmail.com>
- * @version 0.0.1
+ * @version 0.0.2
  **/
 
 
@@ -24,7 +24,7 @@ Crafty.c('Explosion', {
 	 * @public
 	 **/
 	init: function() {
-		this.addComponent('2D, Canvas, expl, SpriteAnimation')
+		this.addComponent('2D, Canvas, explosion, SpriteAnimation')
 			.reel('explosion', 500, 0, 0, 16)
 			.animate('explosion')
 			.bind('AnimationEnd', function() {
