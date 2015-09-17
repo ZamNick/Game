@@ -32,7 +32,7 @@ Crafty.c('Explosion', {
 			});
 
 			// TODO: Add audio for explosion.
-
+			Crafty.audio.play("explosion");
 	}
 });
 

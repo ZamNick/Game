@@ -123,6 +123,7 @@ Crafty.c("Player", {
 						powerUpId: powerUpId,
 						name: this.name
 					});
+					Crafty.audio.play("restore_health");
 				}
 			})
 			.bind('RestoreAmmunition', function(powerUpId) {
@@ -132,6 +133,7 @@ Crafty.c("Player", {
 						powerUpId: powerUpId,
 						name: this.name
 					});
+					Crafty.audio.play("restore_ammunition");
 				}
 			})
 			.bind('updatePlayerDirection', function(data) {

@@ -50,3 +50,13 @@ Crafty.sprite(29, 29, "public/img/damage.png", {
 Crafty.sprite(128, "public/img/explosion.png", {
 	explosion: [0,0]
 });
+
+
+
+/**
+ * Binding sound effects.<br />
+ **/
+Crafty.audio.add("laser_weapon_1", "public/sounds/laser_weapon_1.wav");
+Crafty.audio.add("explosion", "public/sounds/explosion.wav");
+Crafty.audio.add("restore_ammunition", "public/sounds/restore_ammunition.wav");
+Crafty.audio.add("restore_health", "public/sounds/restore_health.wav");

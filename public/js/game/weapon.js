@@ -22,6 +22,8 @@ Crafty.c("Bullet", {
 	 **/
 	init: function() {
 		this.addComponent("2D", "Canvas");
+
+		Crafty.audio.play("laser_weapon_1");
 	}
 });
 
