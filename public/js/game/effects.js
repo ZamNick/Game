@@ -31,7 +31,6 @@ Crafty.c('Explosion', {
 				this.destroy();
 			});
 
-			// TODO: Add audio for explosion.
 			Crafty.audio.play("explosion");
 	}
 });
