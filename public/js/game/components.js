@@ -13,7 +13,6 @@
  **/
 Crafty.c('HealthBar', {
 
-	health: 100, // delete ?!
 	bar: [false, false, false],
 
 
@@ -86,8 +85,6 @@ Crafty.c('HealthBar', {
  * So, in each frame you can see how many of ammunition you have.<br />
  **/
 Crafty.c('AmmunitionBar', {
-	
-	ammunition: 100, // delete ?!
 
 	
 
