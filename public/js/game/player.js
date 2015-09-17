@@ -53,23 +53,19 @@ Crafty.c("Player", {
 
 				var direction = '';
 
-			    if(e.key === Crafty.keys.LEFT_ARROW) {
-			      direction = 'left';
-			      if(this.left === true) return;
-			      this.left = true;
-			    } else if (e.key === Crafty.keys.RIGHT_ARROW) {
-			      direction = 'right';
-			      if(this.right === true) return;
-			      this.right = true;
-			    } else if (e.key === Crafty.keys.UP_ARROW) {
-			      direction = 'up';
-			      if(this.up === true) return;
-			      this.up = true;
-			    } else if (e.key === Crafty.keys.DOWN_ARROW) {
-			      direction = 'down';
-			      if(this.down === true) return;
-			      this.down = true;
-			    }
+				if(87 === e.keyCode) {	// W
+					direction = 'up';
+				} else if(68 === e.keyCode) {	// D
+					direction = 'right';
+				} else if(83 === e.keyCode) {	// S
+					direction = 'down';
+				} else if(65 === e.keyCode) {	// A
+					direction = 'left';
+				}
+
+				if(true === this[direction]) return;
+
+				this[direction] = true;
 
 				this.trigger('updatePlayerDirection', { command: 'add', direction: direction });
 			})
@@ -77,19 +73,17 @@ Crafty.c("Player", {
 
 				var direction = '';
 
-			    if(e.key === Crafty.keys.LEFT_ARROW) {
-			      direction = 'left';
-			      this.left = false;
-			    } else if (e.key === Crafty.keys.RIGHT_ARROW) {
-			      direction = 'right';
-			      this.right = false;
-			    } else if (e.key === Crafty.keys.UP_ARROW) {
-			      direction = 'up';
-			      this.up = false;
-			    } else if (e.key === Crafty.keys.DOWN_ARROW) {
-			      direction = 'down';
-			      this.down = false;
-			    }
+				if(87 === e.keyCode) {	// W
+					direction = 'up';
+				} else if(68 === e.keyCode) {	// D
+					direction = 'right';
+				} else if(83 === e.keyCode) {	// S
+					direction = 'down';
+				} else if(65 === e.keyCode) {	// A
+					direction = 'left';
+				}
+
+				this[direction] = false;
 
 			    this.trigger('updatePlayerDirection', { command: 'delete', direction: direction });
 			})
