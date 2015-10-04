@@ -62,11 +62,12 @@ var Game = function() {
 
 	this.addPlayer = function(name) {
 		var playerIndex = this.getPlayerIndex();
-		if(0 === playerIndex) {
-			this.players[playerIndex] = new Player(100, 300, name);
-		} else {
-			this.players[playerIndex] = new Player(1200, 300, name);
-		}
+		// if(0 === playerIndex) {
+		// 	this.players[playerIndex] = new Player(100, 300, name);
+		// } else {
+		// 	this.players[playerIndex] = new Player(1200, 300, name);
+		// }
+		this.players[playerIndex] = new Player(500, 300, name);		// One point for respawn.
 		return playerIndex;
 	}
 
@@ -298,19 +299,18 @@ var Game = function() {
 
 	this.destroyPlayer = function(playerIndex, io) {
 
-		this.players[playerIndex].health = 0;
-
-		io.in(this.id).emit('updatePlayers', this.getPlayers());
+		if(undefined !== this.players[playerIndex]) {
+			this.players[playerIndex].health = 0;
+			io.in(this.id).emit('updatePlayers', this.getPlayers());
+			delete this.players[playerIndex];
+			this.freePlayers.push(playerIndex);
+		}
 
 		if(true === this.gameWithBot) {
 			clearInterval(this.updateBulletsId);
 			clearInterval(this.generatePowerUpsId);
 			clearInterval(this.updatePlayersId);
 		}
-
-		delete this.players[playerIndex];
-
-		this.freePlayers.push(playerIndex);
 	}
 
 	this.endGame = function(playerIndex, io) {
