@@ -190,7 +190,7 @@ window.onload = function() {
 		
 		if(undefined !== socket.gameIndex && undefined !== games[socket.gameIndex]) {
 			socket.emit('joinGame', {
-				id: games[socket.gameIndex].getAttribute('serverGameIndex'),
+				id: socket.gameIndex,
 				userName: socket.userName
 			});
 		} else {
@@ -290,7 +290,7 @@ window.onload = function() {
 		}
 
 		// Save 'clientGameIndex' in session.
-		socket.gameIndex = this.getAttribute('clientGameIndex');
+		socket.gameIndex = this.getAttribute('gameIndex');
 
 		// Change the current marker style.
 		this.style.background = 'rgb(249, 38, 114)';
@@ -487,7 +487,7 @@ window.onload = function() {
 
 		// Override the session 'gameIndex'.
 		// Since 'socket.gameIndex' will contain 'id' of current game on server-side.
-		socket.gameIndex = games[socket.gameIndex].getAttribute('serverGameIndex');
+		// socket.gameIndex = games[socket.gameIndex].getAttribute('serverGameIndex');
 
 		// Show 'room' menu.
 		playWithUserMenu.style.display = 'none';
@@ -584,10 +584,10 @@ window.onload = function() {
 			li.addEventListener('click', liButtonClickHandler, false);
 
 			// Add 'clientGameIndex' attribute that contain position of current game in 'games'.
-			li.setAttribute('clientGameIndex', i);
+			// li.setAttribute('clientGameIndex', i);
 
 			// Add 'serverGameIndex' attribute that contain 'id' of current game on server-side.
-			li.setAttribute('serverGameIndex', data[i].id);
+			li.setAttribute('gameIndex', data[i].id);
 
 			// Add CSS class.
 			li.setAttribute('class', 'play-with-user-menu-li');
@@ -599,7 +599,7 @@ window.onload = function() {
 			playWithUserMenuAvailableGames.appendChild(li);
 
 			// Add marker in array that store all games.
-			games.push(li);
+			games[data[i].id] = li;
 		}
 
 		// If someone marker has already been selected and corresponding game is defined then let it be selected.
