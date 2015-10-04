@@ -33,7 +33,8 @@ Game = {
 	    // Start game.
 		Crafty.scene('Game', obj);
 
-		Crafty.canvas._canvas.style.background = "url('public/img/desert.png') repeat";
+		Crafty.canvas._canvas.style.background = "url('public/img/" + obj.ground + ".png') repeat";
+		//Crafty.canvas._canvas.style.background = "url('public/img/desert.png') repeat";
 	}
 
 

@@ -25,9 +25,8 @@ server.listen(PORT);
 
 
 // Entities
-var Games = new Array(100);
-var Rooms = new Array(100);
-var countOfGames = 0;
+var Games = [];
+var freeGames = [];
 var nicknames = [];
 
 
@@ -49,6 +48,10 @@ var getTimeInAMPM = function(date) {
 	return hours + ':' + minutes + ' ' + ampm;
 }
 
+function getGameIndex() {
+	return freeGames.length > 0 ? freeGames.pop() : Games.length;
+}
+
 
 
 io.on('connection', function (socket) {
@@ -59,32 +62,32 @@ io.on('connection', function (socket) {
 	 **/
 	socket.on('startGameWithBot', function(data) {
 
+		var gameIndex = getGameIndex();
+
 		// Join the fake room that consist of one client.
-		socket.join(countOfGames);
+		socket.join(gameIndex);
 
 		// Save data in session.
 		socket.userName = data.userName;
-		socket.gameIndex = countOfGames;
+		socket.gameIndex = gameIndex;
 
-		// Game settings.
-		Rooms[countOfGames] = {};
-		Rooms[countOfGames].id = countOfGames;
-		Rooms[countOfGames].gameWithBot = true;
-		Rooms[countOfGames].x1 = 100;
-		Rooms[countOfGames].y1 = 300;
-		Rooms[countOfGames].name1 = data.userName;
-		Rooms[countOfGames].x2 = 1200;
-		Rooms[countOfGames].y2 = 300;
-		Rooms[countOfGames].name2 = 'Bot';
+		Games[gameIndex] = new Game();
 
-		// Make and initialize game.
-		Games[countOfGames] = new Game();
-		Games[countOfGames].setGame(Rooms[countOfGames], io);
+		Games[gameIndex].id = gameIndex;
 
-		// Get all main objects and start game.
-		io.in(countOfGames).emit('startGameWithBot', Games[countOfGames].getObjects());
+		Games[gameIndex].gameWithBot = true;
 
-		++countOfGames;
+		Games[gameIndex].addPlayerName(data.userName);
+		socket.playerIndex = Games[gameIndex].addPlayer(data.userName);
+
+		Games[gameIndex].addPlayerName('Bot');
+		Games[gameIndex].addPlayer('Bot');
+
+		Games[gameIndex].setGame(io);
+
+		socket.emit('savePlayerIndex', { playerIndex: socket.playerIndex });
+
+		socket.emit('startGameWithBot', Games[gameIndex].getObjects());
 	});
 
 
@@ -123,17 +126,17 @@ io.on('connection', function (socket) {
 
 	/**
 	 * Request from client on send all available games to client.<br />
-	 * If Rooms[i] is undefined then that rooms does not exist and it cannot be send to client.
-	 * If Rooms[i] is defined but Rooms[i].name is undefined then that game represent
+	 * If Games[i] is undefined then that rooms does not exist and it cannot be send to client.
+	 * If Games[i] is defined but Games[i].name is undefined then that game represent
 	 * game between player and 'Bot' and it cannot be send to client too.<br />
 	 **/
 	socket.on('getGames', function(data) {
 		var allGames = [];
-		for(var i = 0; i < Rooms.length; ++i) {
-			if(undefined !== Rooms[i] && undefined !== Rooms[i].name) {
+		for(var i = 0; i < Games.length; ++i) {
+			if(undefined !== Games[i] && true !== Games[i].gameWithBot) {
 				allGames.push({
-					name: Rooms[i].name,
-					id: Rooms[i].id
+					name: Games[i].name,
+					id: Games[i].id
 				});
 			}
 		}
@@ -149,25 +152,26 @@ io.on('connection', function (socket) {
 	 * about new player and send all room information to new player.<br />
 	 **/
 	socket.on('joinGame', function(data) {
-		if(undefined !== Rooms[data.id].name2) {
+		if(undefined === Games[data.id]) {
 			socket.emit('joinGameError', {
-				text: 'Error: There are no empty place in game !'
+				text: 'Error: This game does not exist !'
 			});
 		} else {
 
-			// Join the room.
-			socket.join(Rooms[data.id].id);
+			// Join the game.
+			socket.join(data.id);
 
 			// Save 'gameIndex' in session.
-			socket.gameIndex = Rooms[data.id].id;
+			socket.gameIndex = data.id;
 
-			// Save 'userName' as the name of second player.
-			Rooms[data.id].name2 = data.userName;
+			// Save user name in game.
+			Games[data.id].addPlayerName(data.userName);
 
-			socket.emit('joinGameSuccessful', Rooms[data.id]);
-			socket.broadcast.to(Rooms[data.id].id).emit('userJoin', { name: data.userName });
+			socket.emit('joinGameSuccessful', { });
 
-			io.in(Rooms[data.id].id).emit('sendChatMessage', {
+			io.in(data.id).emit('updateMembersList', { playersNames: Games[data.id].getPlayersNames() });			
+
+			io.in(data.id).emit('sendChatMessage', {
 				type: 'serverMessage',
 				message: 'User ' + data.userName + ' has joined the game...' 
 			});
@@ -183,31 +187,30 @@ io.on('connection', function (socket) {
 	 **/
 	socket.on('createGame', function(data) {
 
+		var gameIndex = getGameIndex();
+
 		// Join the room.
-		socket.join(countOfGames);
+		socket.join(gameIndex);
 
 		// Save 'gameIndex' in session.
-		socket.gameIndex = countOfGames;
+		socket.gameIndex = gameIndex;
 
-		// Game settings.
-		Rooms[countOfGames] = {};
-		Rooms[countOfGames].name = data.gameName;
-		Rooms[countOfGames].id = countOfGames;
-		Rooms[countOfGames].gameWithBot = false;
-		Rooms[countOfGames].x1 = 100;
-		Rooms[countOfGames].y1 = 300;
-		Rooms[countOfGames].name1 = data.userName;
-		Rooms[countOfGames].x2 = 1200;
-		Rooms[countOfGames].y2 = 300;
+		Games[gameIndex] = new Game();
 
-		socket.emit('createGame', { gameIndex: countOfGames });
+		Games[gameIndex].id = gameIndex;
+
+		Games[gameIndex].name = data.gameName;
+
+		Games[gameIndex].gameWithBot = false;
+
+		Games[gameIndex].addPlayerName(data.userName);
+
+		socket.emit('createGame', { gameIndex: gameIndex });
 		
 		socket.emit('sendChatMessage', {
 			type: 'serverMessage',
 			message: 'User ' + data.userName + ' has joined the game...'
 		});
-
-		++countOfGames;
 	});
 
 
@@ -222,27 +225,33 @@ io.on('connection', function (socket) {
 	 **/
 	socket.on('leaveGame', function(data) {
 
-		socket.broadcast.to(Rooms[data.id].id).emit('sendChatMessage', {
+		Games[data.id].deletePlayerName(data.userName);
+
+		if(true === data.startButtonPushed) {
+			--Games[data.id].buttonsPushed;
+		}
+
+		Games[socket.gameIndex].deletePlayer(socket.playerIndex);
+
+		socket.broadcast.to(data.id).emit('sendChatMessage', {
 			type: 'serverMessage',
 			message: 'User ' + data.userName + ' has left the game...'
 		});
 
-		io.in(Rooms[data.id].id).emit('userLeave', { name: data.userName });
+		socket.broadcast.to(data.id).emit('updateMembersList', { playersNames: Games[data.id].getPlayersNames() });
 
-		socket.leave(Rooms[data.id].id);
+		socket.leave(data.id);
 
 		// Delete 'gameIndex' from session.
-		socket.gameIndex = undefined;
+		delete socket.gameIndex;
 
-		if(undefined === Rooms[data.id].name2) {
-			delete Rooms[data.id];
-		} else {
-			if(Rooms[data.id].name1 === data.userName) {
-				Rooms[data.id].name1 = Rooms[data.id].name2;
-				Rooms[data.id].start1 = Rooms[data.id].start2;
-			}
-			Rooms[data.id].name2 = undefined;
-			Rooms[data.id].start2 = false;
+		// Delete 'playerIndex' from session.
+		delete socket.playerIndex;
+
+		// If game is empty then delete it.
+		if(0 === Games[data.id].getPlayersNames().length) {
+			delete Games[data.id];
+			freeGames.push(data.id);
 		}
 	});
 
@@ -255,27 +264,24 @@ io.on('connection', function (socket) {
 	 **/
 	socket.on('startButtonPushed', function(data) {
 
-		io.in(Rooms[data.id].id).emit('sendChatMessage', {
+		io.in(data.id).emit('sendChatMessage', {
 			type: 'serverMessage',
 			message: 'User ' + data.userName + ' has pushed the start button...'
 		});
 
-		if(Rooms[data.id].name1 === data.userName) {
-			Rooms[data.id].start1 = true;
-		} else {
-			Rooms[data.id].start2 = true;
-		}
+		++Games[data.id].buttonsPushed;
 
-		// If the first and second players pushed the start button then start the game.
-		if(true === Rooms[data.id].start1 && true === Rooms[data.id].start2) {
+		socket.playerIndex = Games[data.id].addPlayer(data.userName);
 
-			Games[Rooms[data.id].id] = new Game();
-			Games[Rooms[data.id].id].setGame(Rooms[data.id], io);
+		socket.emit('savePlayerIndex', { playerIndex: socket.playerIndex });
 
-			io.in(Rooms[data.id].id).emit('startGameWithUser', Games[Rooms[data.id].id].getObjects());
+		if(Games[data.id].buttonsPushed === Games[data.id].getPlayersNames().length) {
 
-			Rooms[data.id].start1 = false;
-			Rooms[data.id].start2 = false;
+			Games[data.id].setGame(io);
+
+			io.in(data.id).emit('startGameWithUser', Games[data.id].getObjects());
+
+			Games[data.id].buttonsPushed = 0;
 		}
 	});
 
@@ -285,7 +291,7 @@ io.on('connection', function (socket) {
 	 * Request from server on sending message in room's chat.<br />
 	 **/
 	socket.on('sendChatMessage', function(data) {
-		io.in(Rooms[data.id].id).emit('sendChatMessage', {
+		io.in(data.id).emit('sendChatMessage', {
 			type: 'userMessage',
 			time: getTimeInAMPM(new Date()),
 			name: data.name,
@@ -294,17 +300,18 @@ io.on('connection', function (socket) {
 	});
 
 
+
 	socket.on('updatePlayerDirection', function(data) {
-		Games[data.id].updatePlayerDirection(data);
+		Games[data.id].updatePlayerDirection(socket.playerIndex, data);
 	});
+
 
 
 	/**
 	 * Change player rotation and broadcast it other players.<br />
 	 **/
 	socket.on('changePlayerRotation', function(data) {
-		Games[data.id].changePlayerRotation(data);
-		io.in(data.id).emit('updatePlayersRotations', Games[data.id].getPlayersRotations());
+		Games[data.id].changePlayerRotation(socket.playerIndex, data);
 	});
 
 
@@ -313,19 +320,7 @@ io.on('connection', function (socket) {
 	 * Create player's bullet and broadcast it other players.<br />
 	 **/
 	socket.on('createBullet', function(data) {
-		Games[data.id].createBullet(data);
-		io.in(data.id).emit('updateBullets', Games[data.id].getBullets());
-		io.in(data.id).emit('updatePlayersAmmunitions', Games[data.id].getPlayersAmmunitions());
-	});
-
-
-
-	/**
-	* Don't change player's position if any collision is occured.<br />
-	**/
-	socket.on('stopPlayer', function(data) {
-		Games[data.id].changePlayerPosition(data);
-		io.in(data.id).emit('stopPlayer', data);
+		Games[data.id].createBullet(socket.playerIndex, data);
 	});
 
 
@@ -334,7 +329,7 @@ io.on('connection', function (socket) {
 	 * Change player's health if health power up was taken.<br />
 	 **/
 	socket.on('RestorePlayerHealth', function(data) {
-		Games[data.id].restorePlayerHealth(data, io);
+		Games[data.id].restorePlayerAttribute(socket.playerIndex, data, io);
 	});
 
 
@@ -343,9 +338,9 @@ io.on('connection', function (socket) {
 	 * Change player's ammunition if ammunition power up was taken.<br />
 	 **/
 	socket.on('RestorePlayerAmmunition', function(data) {
-		Games[data.id].restorePlayerAmmunition(data, io);
+		Games[data.id].restorePlayerAttribute(socket.playerIndex, data, io);
 	});
-
+	
 
 
 	/**
@@ -365,39 +360,28 @@ io.on('connection', function (socket) {
 			message: 'User ' + socket.userName + ' has disconnected...'
 		});
 
-		io.in(socket.gameIndex).emit('userLeave', { name: socket.userName });
-
-		socket.leave(socket.gameIndex);
-
-		if(false === Rooms[socket.gameIndex].gameWithBot) {
-
-			// If client was only user in the room then delete room at all.
-			if(undefined === Rooms[socket.gameIndex].name2) {
-				delete Rooms[socket.gameIndex];
-			} else {
-
-				// If in room was two users and disconnected user is the first then swap his with second user.
-				if(Rooms[socket.gameIndex].name1 === socket.userName) {
-					Rooms[socket.gameIndex].name1 = Rooms[socket.gameIndex].name2;
-					Rooms[socket.gameIndex].start1 = Rooms[socket.gameIndex].start2;
-				}
-
-				Rooms[socket.gameIndex].name2 = undefined;
-				Rooms[socket.gameIndex].start2 = false;
-			}
-
-		}
-
 		if(undefined !== Games[socket.gameIndex]) {
 			
-			Games[socket.gameIndex].destroyPlayer(socket.userName, io);
+			Games[socket.gameIndex].deletePlayerName(socket.userName);
+
+			socket.broadcast.to(socket.gameIndex).emit('updateMembersList', { playersNames: Games[socket.gameIndex].getPlayersNames() });
+
+			socket.leave(socket.gameIndex);
+
+			if(Games[socket.gameIndex].countOfPlayers() > 0) {
+				Games[socket.gameIndex].destroyPlayer(socket.playerIndex, io);
+				Games[socket.gameIndex].deletePlayer(socket.playerIndex);
+			}
 
 			// If it was game with bot then delete fake room.
-			if(true === Games[socket.gameIndex].gameWithBot) {
-				delete Rooms[socket.gameIndex];
+			if(0 === Games[socket.gameIndex].getPlayersNames().length || true === Games[socket.gameIndex].gameWithBot) {
+				delete Games[socket.gameIndex];
+				freeGames.push(socket.gameIndex);
 			}
-			
 		}
+
+		// Delete 'playerIndex' from session.
+		delete socket.playerIndex;
 
 		// Delete 'gameIndex' from session.
 		delete socket.gameIndex;

@@ -341,17 +341,27 @@ window.onload = function() {
 		roomMenuTextArea.innerHTML = '';
 		roomMenuTextArea.style.top = '0px';
 
+		// Send request to server for leaving game.
+		socket.emit('leaveGame', {
+			id: socket.gameIndex,
+			userName: socket.userName,
+			startButtonPushed: ('hidden' === roomMenuStartGameButton.style.visibility)
+		});
+
 		// If the start button was hidden then show it again.
 		roomMenuStartGameButton.style.visibility = 'visible';
 
 		// Reset scroll style.
 		chat.resetScroll();
 
-		// Send request to server for leaving game.
-		socket.emit('leaveGame', {
-			id: socket.gameIndex,
-			userName: socket.userName
-		});
+		// Clear members list.
+		roomMenuMembers.innerHTML = '';
+
+		// Delete 'gameIndex' from session.
+		// delete socket.gameIndex;
+
+		// Delete 'playerIndex' from session.
+		delete socket.playerIndex;
 
 		// Get all available games.
 		getGamesFromServerId = setInterval(function() { getGamesFromServer() }, 1000);
@@ -473,7 +483,7 @@ window.onload = function() {
 	 * @callback
 	 * @param {Object} data - Dataset from server.
 	 **/
-	socket.on('joinGameSuccessful', function(data) {
+	socket.on('joinGameSuccessful', function() {
 
 		// Override the session 'gameIndex'.
 		// Since 'socket.gameIndex' will contain 'id' of current game on server-side.
@@ -488,27 +498,35 @@ window.onload = function() {
 
 		// Break generate requests for server for update available games list.
 		clearInterval(getGamesFromServerId);
+	});
+
+
+
+	socket.on('updateMembersList', function(data) {
 
 		// Clear 'room' menu members list.
 		roomMenuMembers.innerHTML = '';
 
-		// Create marker for first player.
-		var li = document.createElement('li');
+		for(var i = 0; i < data.playersNames.length; ++i) {
 
-		// Add first player name in his own marker.
-		li.innerHTML = data.name1;
+			// Create marker for someone player.
+			var li = document.createElement('li');
 
-		// Add first player's marker to the room menu members list.
-		roomMenuMembers.appendChild(li);
+			// Add his name in his own marker.
+			li.innerHTML = data.playersNames[i];
 
-		// Create marker for second player.
-		li = document.createElement('li');
+			// Add his marker to the room menu members list.
+			roomMenuMembers.appendChild(li);
+		}
+	});
 
-		// Add second player name in his own marker.
-		li.innerHTML = data.name2;
 
-		// Add second player's marker to the room menu members list.
-		roomMenuMembers.appendChild(li);
+
+	socket.on('savePlayerIndex', function(data) {
+
+		// Save 'playerIndex' in session.
+		socket.playerIndex = data.playerIndex;
+
 	});
 
 
@@ -597,66 +615,12 @@ window.onload = function() {
 
 
 	/**
-	 * Response from server that accepted when player has joined room.<br />
-	 *
-	 * @callback
-	 * @param {Object} data - Dataset from server.
-	 **/
-	socket.on('userJoin', function(data) {
-		
-		// Create marker for second player.
-		var li = document.createElement('li');
-
-		// Add second player name in his own marker.
-		li.innerHTML = data.name;
-
-		// Add second player's marker to the room menu members list.
-		roomMenuMembers.appendChild(li);
-	});
-
-
-
-	/**
-	 * Response from server that accepted when player has left room.<br />
-	 *
-	 * @callback
-	 * @param {Object} data - Dataset from server.
-	 **/
-	socket.on('userLeave', function(data) {
-
-		// If current user left the game then clear his room menu members list.
-		// Otherwise, delete corresponding marker from room menu members list.
-		if(data.name === socket.userName) {
-			roomMenuMembers.innerHTML = '';
-		} else {
-
-			// If first marker is marker of left player then delete it.
-			// Otherwise, delete the second marker.
-			if(roomMenuMembers.firstChild.textContent === data.name) {
-				roomMenuMembers.removeChild(roomMenuMembers.firstChild);
-			} else {
-				roomMenuMembers.removeChild(roomMenuMembers.lastChild);
-			}
-
-		}
-	});
-
-
-
-	/**
 	 * Response from server for start game.<br />
 	 *
 	 * @callback
 	 * @param {Object} data - Dataset from server.
 	 **/
 	socket.on('startGameWithUser', function(data) {
-
-		// Check current user corresponding with first player.
-		if(data.player1.name !== socket.userName) {
-			var bufPlayer = data.player1;
-			data.player1 = data.player2;
-			data.player2 = bufPlayer;
-		}
 
 		// Save 'socket' in game object.
 		data.socket = socket;

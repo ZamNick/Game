@@ -20,7 +20,6 @@ var Player = function(x, y, name) {
 	this.down = 0;
 	this.left = 0;
 	this.right = 0;
-
 }
 
 module.exports = Player;

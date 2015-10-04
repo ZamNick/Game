@@ -6,12 +6,23 @@ var Block = require('./block.js');
 var Game = function() {
 
 	this.id = 0;
+
+	this.name = '';
+
 	this.gameWithBot = false;
-	this.player1 = null;
-	this.player2 = null;
+
+	this.buttonsPushed = 0;
+
+	this.playersNames = [];
+
+	this.players = [];
+	this.freePlayers = [];
+
+	this.blocks = [];
+
 	this.bullets = [];
 	this.destroyedBullets = [];
-	this.blocks = [];
+
 	this.powerUps = [];
 	this.destroyedPowerUps = [];
 
@@ -19,11 +30,7 @@ var Game = function() {
 	this.generatePowerUpsId = 0;
 	this.updatePlayersId = 0;
 
-	this.setGame = function(data, io) {
-		this.id = data.id;
-		this.gameWithBot = data.gameWithBot;
-		this.player1 = new Player(data.x1, data.y1, data.name1);
-		this.player2 = new Player(data.x2, data.y2, data.name2);
+	this.setGame = function(io) {
 		this.updateBulletsId = this.updateBullets(io);
 		this.generatePowerUpsId = this.generatePowerUps(io);
 		this.updatePlayersId = this.updatePlayers(io);
@@ -33,42 +40,64 @@ var Game = function() {
 						new Block(900, 100), new Block(946, 100), new Block(900, 145), new Block(946, 145) ];
 	}
 
-	// Return the main objects of the game. In the beginning
-	// there are no bullets, destroyed bullets, powerups and
-	// destroyed powerups on the game.
-	this.getObjects = function() {
-		return {
-			id: this.id,
-			player1: this.player1,
-			player2: this.player2,
-			blocks: this.blocks
+	this.addPlayerName = function(name) {
+		this.playersNames.push(name);
+	}
+
+	this.deletePlayerName = function(name) {
+		this.playersNames.splice(this.playersNames.indexOf(name), 1);
+	}
+
+	this.getPlayersNames = function() {
+		return this.playersNames;
+	}
+
+	this.countOfPlayers = function() {
+		return this.players.length - this.freePlayers.length;
+	}
+
+	this.getPlayerIndex = function() {
+		return this.freePlayers.length > 0 ? this.freePlayers.pop() : this.players.length;
+	}
+
+	this.addPlayer = function(name) {
+		var playerIndex = this.getPlayerIndex();
+		if(0 === playerIndex) {
+			this.players[playerIndex] = new Player(100, 300, name);
+		} else {
+			this.players[playerIndex] = new Player(1200, 300, name);
+		}
+		return playerIndex;
+	}
+
+	this.deletePlayer = function(id) {
+		if(undefined !== this.players[id]) {
+			delete this.players[id];
+			this.freePlayers.push(id);
 		}
 	}
 
-	this.getPlayersPositions = function() {
+	this.getPlayers = function() {
 		return {
-			x1: this.player1.x,
-			y1: this.player1.y,
-			name1: this.player1.name,
-			x2: this.player2.x,
-			y2: this.player2.y
+			players: this.players
 		};
 	}
 
-	this.getPlayersRotations = function() {
-		return {
-			rotation1: this.player1.rotation,
-			name1: this.player1.name,
-			rotation2: this.player2.rotation
-		};
+	this.getTypeOfGround = function() {
+		var type = Math.floor(Math.random() * 4) + 1;
+		if(1 === type) return 'desert';
+		else if(2 === type) return 'dunes';
+		else if(3 === type) return 'grass';
+		else return 'snow';
 	}
 
-	this.getPlayersAmmunitions = function() {
+	this.getObjects = function() {
 		return {
-			ammunition1: this.player1.ammunition,
-			name1: this.player1.name,
-			ammunition2: this.player2.ammunition
-		};
+			id: this.id,
+			ground: this.getTypeOfGround(),
+			players: this.players,
+			blocks: this.blocks
+		}
 	}
 
 	this.getBullets = function() {
@@ -77,39 +106,21 @@ var Game = function() {
 		};
 	}
 
-	this.updatePlayerDirection = function(data) {
-		if(data.name === this.player1.name) {
-			this.player1[data.direction] = ('add' === data.command ? 3 : 0);
-		} else {
-			this.player2[data.direction] = ('add' === data.command ? 3 : 0);
+	this.updatePlayerDirection = function(playerIndex, data) {
+		if(undefined !== this.players[playerIndex]) {
+			this.players[playerIndex][data.direction] = ('add' === data.command ? 3 : 0);
 		}
 	}
 
-	this.changePlayerPosition = function(data) {
-		if(data.name === this.player1.name) {
-			this.player1.x = data.x;
-			this.player1.y = data.y;
-		} else {
-			this.player2.x = data.x;
-			this.player2.y = data.y;
+	this.changePlayerRotation = function(playerIndex, data) {
+		if(undefined !== this.players[playerIndex]) {
+			this.players[playerIndex].rotation = data.rotation;
 		}
 	}
 
-	this.changePlayerRotation = function(data) {
-		if(data.name === this.player1.name) {
-			this.player1.rotation = data.rotation;
-		} else {
-			this.player2.rotation = data.rotation;
-		}
-	}
+	this.createBullet = function(playerIndex, data) {
 
-	this.createBullet = function(data) {
-
-		if(data.owner === this.player1.name) {
-			--this.player1.ammunition;
-		} else {
-			--this.player2.ammunition;
-		}
+		--this.players[playerIndex].ammunition;
 
 		var bullet = new Bullet(data.x, data.y, data.rotation, data.owner);
 
@@ -120,12 +131,13 @@ var Game = function() {
 			bullet._w = 5;
 			bullet._h = 13;
 			bullet.damage = 1;
+			bullet.type = 'Weapon1';
 		}
 
 		bullet.x -= bullet._w / 2;
 		bullet.y -= bullet._h / 2;
 
-		if(this.destroyedBullets.length) {
+		if(this.destroyedBullets.length > 0) {
 			this.bullets[this.destroyedBullets[this.destroyedBullets.length - 1]] = bullet;
 			this.destroyedBullets.pop();
 		} else {
@@ -142,7 +154,7 @@ var Game = function() {
 		if(this.bullets.length > this.destroyedBullets.length) {
 			for(var i = 0; i < this.bullets.length; ++i) {
 
-				if(this.bullets[i] === undefined) continue;
+				if(undefined === this.bullets[i]) continue;
 
 				// Update bullets position.
 				this.bullets[i].x += this.bullets[i].xspeed;
@@ -159,39 +171,24 @@ var Game = function() {
 					continue;
 				}
 
-
-				if(this.player1.health > 0 && this.player1.name !== this.bullets[i].owner && this.checkCollision(this.player1, this.bullets[i])) {
-					this.player1.health -= this.bullets[i].damage;
-					delete this.bullets[i];
-					this.destroyedBullets.push(i);
-					io.in(this.id).emit('updatePlayerHealth', {
-						id: this.id,
-						name1: this.player1.name,
-						health: this.player1.health
-					});
-					if(this.player1.health <= 0) {
-						var that = this;
-						setTimeout(function() { that.endGame.call(that, io); }, 3000);
+				for(var j = 0; j < this.players.length; ++j) {
+					if(undefined === this.players[j]) continue;
+					if(this.players[j].health > 0 && this.players[j].name !== this.bullets[i].owner && this.checkCollision(this.players[j], this.bullets[i])) {
+						this.players[j].health -= this.bullets[i].damage;
+						delete this.bullets[i];
+						this.destroyedBullets.push(i);
+						io.in(this.id).emit('updatePlayers', this.getPlayers());
+						if(this.players[j].health <= 0) {
+							delete this.players[j];
+							this.freePlayers.push(j);
+							this.endGame(j, io);
+						}
+						break;
 					}
-					continue;
 				}
 
 
-				if(this.player2.health > 0 && this.player2.name !== this.bullets[i].owner && this.checkCollision(this.player2, this.bullets[i])) {
-					this.player2.health -= this.bullets[i].damage;
-					delete this.bullets[i];
-					this.destroyedBullets.push(i);
-					io.in(this.id).emit('updatePlayerHealth', {
-						id: this.id,
-						name1: this.player2.name,
-						health: this.player2.health
-					});
-					if(this.player2.health <= 0) {
-						var that = this;
-						setTimeout(function() { that.endGame.call(that, io); }, 3000);
-					}
-					continue;
-				}
+				if(undefined === this.bullets[i]) continue;
 
 
 				for(var j = 0; j < this.blocks.length; ++j) {
@@ -202,10 +199,7 @@ var Game = function() {
 					}
 				}
 			}
-			io.in(this.id).emit('updateBullets', {
-				id: this.id,
-				bullets: this.bullets
-			});
+			io.in(this.id).emit('updateBullets', this.getBullets());
 		}
 	}
 
@@ -216,41 +210,31 @@ var Game = function() {
 
 	this.updatePlayersState = function(io) {
 
-		this.player1.x += this.player1.right - this.player1.left;
-		this.player1.y += this.player1.down - this.player1.up;
+		if(1 === this.countOfPlayers()) this.endGame(null, io);
 
-		for(var i = 0; i < this.blocks.length; ++i) {
-			if(this.checkCollision(this.player1, this.blocks[i])) {
-				this.player1.x -= this.player1.right - this.player1.left;
-				this.player1.y -= this.player1.down - this.player1.up;
-				break;
+		for(var i = 0; i < this.players.length; ++i) {
+			if(undefined !== this.players[i]) {
+				
+				this.players[i].x += this.players[i].right - this.players[i].left;
+				this.players[i].y += this.players[i].down - this.players[i].up;
+
+				for(var j = 0; j < this.blocks.length; ++j) {
+					if(this.checkCollision(this.players[i], this.blocks[j])) {
+						this.players[i].x -= this.players[i].right - this.players[i].left;
+						this.players[i].y -= this.players[i].down - this.players[i].up;
+						break;
+					}
+				}
 			}
 		}
 
-		this.player2.x += this.player2.right - this.player2.left;
-		this.player2.y += this.player2.down - this.player2.up;
-
-		for(var i = 0; i < this.blocks.length; ++i) {
-			if(this.checkCollision(this.player2, this.blocks[i])) {
-				this.player2.x -= this.player2.right - this.player2.left;
-				this.player2.y -= this.player2.down - this.player2.up;
-				break;
-			}
-		}
-
-		io.in(this.id).emit('updatePlayersPositions', {
-			x1: this.player1.x,
-			y1: this.player1.y,
-			name1: this.player1.name,
-			x2: this.player2.x,
-			y2: this.player2.y
-		});
+		io.in(this.id).emit('updatePlayers', this.getPlayers());
 	}
 
-	// It's WRONG function for detect collision of two objects, but for 0.0.1 version it will enough.
-	this.checkCollision = function(obj, bullet) {
-		return Math.abs(2 * obj.x - 2 * bullet.x + obj._w - bullet._w) < (obj._w + bullet._w) && 
-			   Math.abs(2 * obj.y - 2 * bullet.y + obj._h - bullet._h) < (obj._h + bullet._h);
+	// It's WRONG function for detect collision of two objects, but for 0.0.2 version it will enough.
+	this.checkCollision = function(a, b) {
+		return Math.abs(2 * a.x - 2 * b.x + a._w - b._w) < (a._w + b._w) && 
+			   Math.abs(2 * a.y - 2 * b.y + a._h - b._h) < (a._h + b._h);
 	}
 
 	this.generatePowerUps = function(io) {
@@ -297,69 +281,63 @@ var Game = function() {
 		}
 	}
 
-	this.restorePlayerHealth = function(data, io) {
+	this.restorePlayerAttribute = function(playerIndex, data, io) {
+
 		// If something going wrong.
 		if(undefined === this.powerUps[data.powerUpId]) return;
 
-		if(data.name === this.player1.name) this.player1.health = Math.min(this.player1.health + this.powerUps[data.powerUpId].value, 100);
-		else this.player2.health = Math.min(this.player2.health + this.powerUps[data.powerUpId].value, 100);
+		if('Health' === this.powerUps[data.powerUpId].type) this.players[playerIndex].health = Math.min(this.players[playerIndex].health + this.powerUps[data.powerUpId].value, 100);
+		else this.players[playerIndex].ammunition = Math.min(this.players[playerIndex].ammunition + this.powerUps[data.powerUpId].value, 100);
+
 		io.in(this.id).emit('destroyPowerUp', { powerUpId: data.powerUpId });
-		io.in(this.id).emit('updatePlayerHealth', {
-			id: this.id,
-			name1: data.name,
-			health: (data.name === this.player1.name ? this.player1.health : this.player2.health)
-		});
 		delete this.powerUps[data.powerUpId];
 		this.destroyedPowerUps.push(data.powerUpId);
+
+		io.in(this.id).emit('updatePlayers', this.getPlayers());
 	}
 
-	this.restorePlayerAmmunition = function(data, io) {
-		// If something going wrong.
-		if(undefined === this.powerUps[data.powerUpId]) return;
-		
-		if(data.name === this.player1.name) this.player1.ammunition = Math.min(this.player1.ammunition + this.powerUps[data.powerUpId].value, 100);
-		else this.player2.ammunition = Math.min(this.player2.ammunition + this.powerUps[data.powerUpId].value, 100);
-		io.in(this.id).emit('destroyPowerUp', { powerUpId: data.powerUpId });
-		io.in(this.id).emit('updatePlayerAmmunition', {
-			id: this.id,
-			name1: data.name,
-			ammunition: (data.name === this.player1.name ? this.player1.ammunition : this.player2.ammunition)
-		});
-		delete this.powerUps[data.powerUpId];
-		this.destroyedPowerUps.push(data.powerUpId);
-	}
+	this.destroyPlayer = function(playerIndex, io) {
 
-	this.destroyPlayer = function(name, io) {
+		this.players[playerIndex].health = 0;
 
-		if(this.player1.name === name) {
+		io.in(this.id).emit('updatePlayers', this.getPlayers());
 
-			this.player1.health = 0;
-
-			io.in(this.id).emit('updatePlayerHealth', {
-				id: this.id,
-				name1: this.player1.name,
-				health: this.player1.health
-			});
-		} else {
-
-			this.player2.health = 0;
-
-			io.in(this.id).emit('updatePlayerHealth', {
-				id: this.id,
-				name1: this.player2.name,
-				health: this.player2.health
-			});
+		if(true === this.gameWithBot) {
+			clearInterval(this.updateBulletsId);
+			clearInterval(this.generatePowerUpsId);
+			clearInterval(this.updatePlayersId);
 		}
 
-		var that = this;
-		setTimeout(function() { that.endGame.call(that, io); }, 3000);
+		delete this.players[playerIndex];
+
+		this.freePlayers.push(playerIndex);
 	}
 
-	this.endGame = function(io) {
-		clearInterval(this.updateBulletsId);
-		clearInterval(this.generatePowerUpsId);
-		clearInterval(this.updatePlayersId);
-		io.in(this.id).emit('endGame', { gameWithBot: this.gameWithBot });
+	this.endGame = function(playerIndex, io) {
+		
+		var that = this;
+
+		setTimeout(function() {
+
+			if(null === playerIndex) {
+				
+				clearInterval(that.updateBulletsId);
+				clearInterval(that.generatePowerUpsId);
+				clearInterval(that.updatePlayersId);
+
+				for(var i = 0; i < that.players.length; ++i) {
+					if(undefined !== that.players[i]) {
+						playerIndex = i;
+						delete that.players[i];
+						that.freePlayers.push(i);
+						break;
+					}
+				}
+			}
+
+			io.in(that.id).emit('endGame', { gameWithBot: that.gameWithBot, playerIndex: playerIndex });
+
+		}, 3000);
 	}
 };
 

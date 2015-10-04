@@ -9,6 +9,7 @@ var Bullet = function(x, y, rotation, owner) {
 	this.yspeed = 0;
 	this.damage = 0;
 	this.owner = owner;
+	this.type = '';
 
 }
 
