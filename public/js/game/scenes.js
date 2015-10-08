@@ -39,6 +39,8 @@ Crafty.scene('Game', function(data) {
 		}
 	}
 
+	Crafty.viewport.bounds = {min:{x: 0, y: 0}, max:{x: 5000, y: 5000}}; //map size
+	Crafty.viewport.follow(players[playerIndex], 0, 0);
 
 	socket.on('updatePlayers', function(data) {
 		for(var i = 0; i < data.players.length; ++i) {

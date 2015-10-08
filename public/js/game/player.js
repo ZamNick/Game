@@ -29,7 +29,7 @@ Crafty.c("Player", {
 	left: false,
 	right: false,
 
-
+	mouseMoveEvent: null,
 
 	/**
 	 * Create player object and binding it to all main behaviors and effect
@@ -168,7 +168,8 @@ Crafty.c("Player", {
 				socket.emit('changePlayerRotation', {
 					id: gameId,
 					name: this.name,
-					rotation: Math.round((180 * (Math.PI / 2 + Math.atan2(e.pageY - this.y - this.radius, e.pageX - this.x - this.radius))) / Math.PI)
+					// rotation: Math.round((180 * (Math.PI / 2 + Math.atan2(e.pageY - this.y - this.radius, e.pageX - this.x - this.radius))) / Math.PI)
+					rotation: Math.round((180 * (Math.PI / 2 + Math.atan2(e.pageY - (this.y + Crafty.viewport.y) - this.radius, e.pageX - (this.x + Crafty.viewport.x) - this.radius))) / Math.PI)
 				});
 			})
 			.bind('createBulletOnServer', function() {
@@ -230,8 +231,9 @@ Crafty.c("Player", {
 			y: this.y - 64 + this._h / 2	// Similarly will be with height.
 		});
 	},
-	shoot: function() {
+	shoot: function(e) {
 		this.trigger('createBulletOnServer');
+		this.trigger('sendRotationToServer', this.mouseMoveEvent);
 	},
 	onMouseDown: function() {
 		this.attack = true;
@@ -242,5 +244,6 @@ Crafty.c("Player", {
 	onMouseMove: function(e) {
 		//this.rotation = Math.round((180 * (Math.PI / 2 + Math.atan2(e.pageY - this.y - this.radius, e.pageX - this.x - this.radius))) / Math.PI);
 		this.trigger('sendRotationToServer', e);
+		this.mouseMoveEvent = e;
 	}
 });

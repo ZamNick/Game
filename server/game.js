@@ -2,6 +2,7 @@ var Player = require('./player.js');
 var Bullet = require('./bullet.js');
 var PowerUp = require('./powerup.js');
 var Block = require('./block.js');
+var Maps = require('./maps.js');
 
 var Game = function() {
 
@@ -34,10 +35,14 @@ var Game = function() {
 		this.updateBulletsId = this.updateBullets(io);
 		this.generatePowerUpsId = this.generatePowerUps(io);
 		this.updatePlayersId = this.updatePlayers(io);
-		this.blocks = [ new Block(300, 500), new Block(346, 500), new Block(300, 455), new Block(346, 455),
-						new Block(300, 100), new Block(346, 100), new Block(300, 145), new Block(346, 145),
-						new Block(900, 500), new Block(946, 500), new Block(900, 455), new Block(946, 455),
-						new Block(900, 100), new Block(946, 100), new Block(900, 145), new Block(946, 145) ];
+		// this.blocks = [ new Block(300, 500), new Block(346, 500), new Block(300, 455), new Block(346, 455),
+		// 				new Block(300, 100), new Block(346, 100), new Block(300, 145), new Block(346, 145),
+		// 				new Block(900, 500), new Block(946, 500), new Block(900, 455), new Block(946, 455),
+		// 				new Block(900, 100), new Block(946, 100), new Block(900, 145), new Block(946, 145) ];
+		this.blocks = [];
+		for(var i = 0; i < Maps[0].x.length; ++i) {
+			this.blocks.push(new Block(Maps[0].x[i], Maps[0].y[i]));
+		}
 	}
 
 	this.addPlayerName = function(name) {
@@ -165,8 +170,8 @@ var Game = function() {
 				// Don't allow bullet go out of screen.
 				if(this.bullets[i].x < 0 || 
 				   this.bullets[i].y < 0 || 
-				   this.bullets[i].x > 2000 || 
-				   this.bullets[i].y > 2000) {
+				   this.bullets[i].x > 5000 || 
+				   this.bullets[i].y > 5000) {
 					delete this.bullets[i];
 					this.destroyedBullets.push(i);
 					continue;
