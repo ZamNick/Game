@@ -134,8 +134,6 @@ var Game = function() {
 		bullet.yspeed = 20 * Math.cos(bullet.rotation / (180 / Math.PI));
 
 		if('Weapon1' === data.type) {
-			bullet._w = 5;
-			bullet._h = 13;
 			bullet.damage = 1;
 			bullet.type = 'Weapon1';
 		}
