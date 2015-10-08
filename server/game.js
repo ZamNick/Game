@@ -255,12 +255,8 @@ var Game = function() {
 		var type = Math.random();
 		if(type <= 0.5) {
 			newPowerUp.type = 'Health';
-			newPowerUp._w = 37;
-			newPowerUp._h = 34;
 		} else {
 			newPowerUp.type = 'Ammunition';
-			newPowerUp._w = 37;
-			newPowerUp._h = 36;
 		}
 		var collisionWithBlock = false;
 		for(var i = 0; i < this.blocks.length; ++i) {
