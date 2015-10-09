@@ -267,23 +267,24 @@ input.menu[type="text"]:focus {
 	position: absolute;
 	border: 1px solid white;
 	height: 120px;
-	width: 100px;
-	left: 400px;
+	width: 240px;
+	left: 260px;
 	top: 40px;
+	overflow: hidden;
 }
 
 #room-menu-members li {
 	position: relative;
 	display: inline-block;
 	color: rgb(249, 38, 114);
-	width: 100px;
+	width: 240px;
 	font-weight: bold;
 }
 
 #room-menu-label {
 	position: absolute;
 	top: 20px;
-	left: 400px;
+	left: 260px;
 	font-size: 15px;
 	color: rgb(230, 219, 116);
 	background: rgb(64, 64, 61);
