@@ -234,6 +234,7 @@ Crafty.c("Player", {
 	shoot: function(e) {
 		this.trigger('createBulletOnServer');
 		this.trigger('sendRotationToServer', this.mouseMoveEvent);
+		Crafty.audio.play("laser_weapon_1");
 	},
 	onMouseDown: function() {
 		this.attack = true;
