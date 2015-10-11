@@ -35,11 +35,11 @@ Crafty.sprite(46, 45, "public/img/block.png", {
 	block: [0,0]
 });
 
-Crafty.sprite(37, 34, "public/img/health.png", {
+Crafty.sprite(37, 37, "public/img/health.png", {
 	health: [0,0]
 });
 
-Crafty.sprite(37, 36, "public/img/ammunition.png", {
+Crafty.sprite(37, 37, "public/img/ammunition.png", {
 	ammunition: [0,0]
 });
 
