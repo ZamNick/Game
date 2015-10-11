@@ -19,6 +19,12 @@ Crafty.scene('Game', function(data) {
 	var socket = data.socket;
 	var playerIndex = data.socket.playerIndex;
 
+	for(var x = 0; x < 20; ++x) {
+		for(var y = 0; y < 20; ++y) {
+			Crafty.e('BackgroundBlock').__init( x * 222, y * 204, data.ground);
+		}
+	}
+
 	for(var i = 1; i < data.blocks.length; ++i) {
 		Crafty.e('Block').__init(data.blocks[i].x, data.blocks[i].y);
 	}

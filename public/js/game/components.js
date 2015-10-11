@@ -166,3 +166,19 @@ Crafty.c('Block', {
 		return this;
 	}
 });
+
+
+Crafty.c('BackgroundBlock', {
+
+	__init: function(x, y, background) {
+
+		this.addComponent('2D', 'Canvas', 'Sprite', background);
+
+		this.attr({
+			x: x,
+			y: y
+		});
+
+		return this;
+	}
+});

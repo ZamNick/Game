@@ -51,6 +51,21 @@ Crafty.sprite(128, "public/img/explosion.png", {
 	explosion: [0,0]
 });
 
+Crafty.sprite(222, 204, "public/img/snow.png", {
+	snow: [0,0]
+});
+
+Crafty.sprite(222, 204, "public/img/desert.png", {
+	desert: [0,0]
+});
+
+Crafty.sprite(222, 204, "public/img/dunes.png", {
+	dunes: [0,0]
+});
+
+Crafty.sprite(222, 204, "public/img/grass.png", {
+	grass: [0,0]
+});
 
 
 /**
