@@ -31,7 +31,7 @@ Crafty.c('Explosion', {
 				this.destroy();
 			});
 
-			Crafty.audio.play("explosion");
+			explosion_sound.play();
 	}
 });
 

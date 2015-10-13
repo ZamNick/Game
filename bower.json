@@ -4,6 +4,7 @@
   "description": "Game applies to shooting arcade class. Represents online-game with two or more users that can shoot to each other, pick up some power ups, etc... The game's client and server is written only on Javascript programming language.",
   "author": "Nikolay Zamulov <zamulov8@gmail.com>",
   "dependencies": {
-    "crafty": "~0.6.3"
+    "crafty": "~0.6.3",
+    "howler.js": "howler#~1.1.27"
   }
 }

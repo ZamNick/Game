@@ -7,7 +7,18 @@
 
 
  
-Crafty.audio.add("laser_weapon_1", "public/sounds/laser_weapon_1.wav");
-Crafty.audio.add("explosion", "public/sounds/explosion.wav");
-Crafty.audio.add("restore_ammunition", "public/sounds/restore_ammunition.wav");
-Crafty.audio.add("restore_health", "public/sounds/restore_health.wav");
+var laser_weapon_1_sound = new Howl({
+	urls: ['public/sounds/laser_weapon_1.wav']
+});
+
+var explosion_sound = new Howl({
+	urls: ['public/sounds/explosion.wav']
+});
+
+var restore_ammunition_sound = new Howl({
+	urls: ['public/sounds/restore_ammunition.wav']
+});
+
+var restore_health_sound = new Howl({
+	urls: ['public/sounds/restore_health.wav']
+});

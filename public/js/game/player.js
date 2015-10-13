@@ -117,7 +117,7 @@ Crafty.c("Player", {
 						powerUpId: powerUpId,
 						name: this.name
 					});
-					Crafty.audio.play("restore_health");
+					restore_health_sound.play();
 				}
 			})
 			.bind('RestoreAmmunition', function(powerUpId) {
@@ -127,7 +127,7 @@ Crafty.c("Player", {
 						powerUpId: powerUpId,
 						name: this.name
 					});
-					Crafty.audio.play("restore_ammunition");
+					restore_ammunition_sound.play();
 				}
 			})
 			.bind('updatePlayerDirection', function(data) {
@@ -234,7 +234,7 @@ Crafty.c("Player", {
 	shoot: function(e) {
 		this.trigger('createBulletOnServer');
 		this.trigger('sendRotationToServer', this.mouseMoveEvent);
-		Crafty.audio.play("laser_weapon_1");
+		laser_weapon_1_sound.play();
 	},
 	onMouseDown: function() {
 		this.attack = true;
