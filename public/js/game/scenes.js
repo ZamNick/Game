@@ -25,6 +25,8 @@ Crafty.scene('Game', function(data) {
 		}
 	}
 
+	var bulletsPull = new BulletsPull();
+
 	for(var i = 1; i < data.blocks.length; ++i) {
 		Crafty.e('Block').__init(data.blocks[i].x, data.blocks[i].y);
 	}
@@ -82,16 +84,12 @@ Crafty.scene('Game', function(data) {
 	socket.on('updateBullets', function(data) {
 		for(var i = 0; i < data.bullets.length; ++i) {
 			if(data.bullets[i] === null && bullets[i] !== undefined) {
-				bullets[i].destroy();
-				delete bullets[i];
-			} else if(bullets[i] === undefined && data.bullets[i] !== null) {
-				bullets[i] = Crafty.e(data.bullets[i].type);
-				bullets[i].attr({
-					x: data.bullets[i].x,
-					y: data.bullets[i].y,
-					rotation: data.bullets[i].rotation
-				});
-			} else if(bullets[i] !== undefined && data.bullets[i] !== null) {
+				bulletsPull.returnBullet(bullets[i]);
+				bullets[i] = undefined;
+			} else if(data.bullets[i] !== null) {
+				if(undefined === bullets[i]) {
+					bullets[i] = bulletsPull.getBullet(data.bullets[i].type);
+				}
 				bullets[i].attr({
 					x: data.bullets[i].x,
 					y: data.bullets[i].y,

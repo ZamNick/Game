@@ -20,7 +20,7 @@ Crafty.c("Player", {
 	ammunition: 100,
 	weapon: {
 		firerate: 5,
-		name: 'Weapon1'
+		name: 'laser_weapon_1'
 	},
 	attack: false,
 

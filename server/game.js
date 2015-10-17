@@ -128,14 +128,13 @@ var Game = function() {
 
 		--this.players[playerIndex].ammunition;
 
-		var bullet = new Bullet(data.x, data.y, data.rotation, data.owner);
+		var bullet = new Bullet(data.x, data.y, data.rotation, data.owner, data.type);
 
 		bullet.xspeed = 20 * Math.sin(bullet.rotation / (180 / Math.PI));
 		bullet.yspeed = 20 * Math.cos(bullet.rotation / (180 / Math.PI));
 
-		if('Weapon1' === data.type) {
+		if('laser_weapon_1' === data.type) {
 			bullet.damage = 1;
-			bullet.type = 'Weapon1';
 		}
 
 		bullet.x -= bullet._w / 2;

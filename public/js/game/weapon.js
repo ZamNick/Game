@@ -21,28 +21,7 @@ Crafty.c("Bullet", {
 	 * @public
 	 **/
 	init: function() {
-		this.addComponent("2D", "Canvas");
-
-		//Crafty.audio.play("laser_weapon_1");
-	}
-});
-
-
-
-Crafty.c("Weapon1", {
-
-
-
-	/**
-	 * Initialize Weapon1 object by adding Bullet component for make shooting and 'laser' sprites for view.<br />
-	 *
-	 * @see http://craftyjs.com/api/2D.html#-origin
-	 * @constructor
-	 * @function
-	 * @public
-	 **/
-	init: function() {
-		this.addComponent("Bullet", "laser_weapon_1")
+		this.addComponent("2D", "Canvas")
 			.origin('center');
 	}
 });
