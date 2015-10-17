@@ -12,7 +12,7 @@ var Player = function(x, y, name) {
 	this.rotation = 0;
 	this.weapon = {
 		firerate: 5,
-		name: 'Weapon1'
+		name: 'laser_weapon_1'
 	}
 	this.attack = false;
 
