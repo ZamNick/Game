@@ -4,14 +4,14 @@ var BulletsPull = function() {
 
 	(function(bullets) {
 		for(var i = 0; i < 500; ++i) {
-			bullets.push(Crafty.e('Bullet'));
+			bullets.push(Crafty.e('2D, Canvas'));
 			bullets[bullets.length - 1].attr({ x: -1, y: -1 });
 		}
 	})(this.bullets);
 
 	this.resize = function() {
 		for(var i = 0; i < 50; ++i) {
-			this.bullets.push(Crafty.e('Bullet'));
+			this.bullets.push(Crafty.e('2D, Canvas'));
 			this.bullets[this.bullets.length - 1].attr({ x: -1, y: -1 });
 		}
 	}
