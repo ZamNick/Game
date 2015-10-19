@@ -100,16 +100,6 @@ Crafty.c("Player", {
 					y: this.y
 				});
 			})
-			.bind('Stop', function() {
-				if(undefined !== socket) {
-				 	socket.emit('stopPlayer', {
-				 		id: gameId,
-				 		name: this.name,
-				 		x: this.x - this._movement.x,
-				 		y: this.y - this._movement.y
-				 	});
-			 	}
-			})
 			.bind('RestoreHealth', function(powerUpId) {
 				if(undefined !== socket) {
 					socket.emit('RestorePlayerHealth', {
