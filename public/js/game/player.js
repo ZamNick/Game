@@ -175,9 +175,6 @@ Crafty.c("Player", {
 			.bind('createBulletOnServer', function() {
 				socket.emit('createBullet', {
 					id: gameId,
-					x: this.x + this._w / 2,
-					y: this.y + this._h / 2,
-					rotation: this._rotation,
 					type: this.weapon.name,
 					owner: this.name
 				});

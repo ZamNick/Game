@@ -1,10 +1,10 @@
-var Bullet = function(x, y, rotation, owner, type) {
+var Bullet = function(owner, type) {
 
-	this.x = x;
-	this.y = y;
+	this.x = 0;
+	this.y = 0;
 	this._w = 5;
 	this._h = 13;
-	this.rotation = rotation;
+	this.rotation = 0;
 	this.xspeed = 0;
 	this.yspeed = 0;
 	this.damage = 0;

@@ -121,17 +121,22 @@ var Game = function() {
 
 		--this.players[playerIndex].ammunition;
 
-		var bullet = new Bullet(data.x, data.y, data.rotation, data.owner, data.type);
-
-		bullet.xspeed = 20 * Math.sin(bullet.rotation / (180 / Math.PI));
-		bullet.yspeed = 20 * Math.cos(bullet.rotation / (180 / Math.PI));
+		var bullet = new Bullet(data.owner, data.type);
 
 		if('laser_weapon_1' === data.type) {
 			bullet.damage = 1;
 		}
 
+		bullet.x = this.players[playerIndex].x + this.players[playerIndex]._w / 2;
+		bullet.y = this.players[playerIndex].y + this.players[playerIndex]._h / 2;
+
 		bullet.x -= bullet._w / 2;
 		bullet.y -= bullet._h / 2;
+
+		bullet.rotation = this.players[playerIndex].rotation;
+
+		bullet.xspeed = 20 * Math.sin(bullet.rotation / (180 / Math.PI));
+		bullet.yspeed = 20 * Math.cos(bullet.rotation / (180 / Math.PI));
 
 		if(this.destroyedBullets.length > 0) {
 			this.bullets[this.destroyedBullets[this.destroyedBullets.length - 1]] = bullet;
