@@ -35,10 +35,6 @@ var Game = function() {
 		this.updateBulletsId = this.updateBullets(io);
 		this.generatePowerUpsId = this.generatePowerUps(io);
 		this.updatePlayersId = this.updatePlayers(io);
-		// this.blocks = [ new Block(300, 500), new Block(346, 500), new Block(300, 455), new Block(346, 455),
-		// 				new Block(300, 100), new Block(346, 100), new Block(300, 145), new Block(346, 145),
-		// 				new Block(900, 500), new Block(946, 500), new Block(900, 455), new Block(946, 455),
-		// 				new Block(900, 100), new Block(946, 100), new Block(900, 145), new Block(946, 145) ];
 		this.blocks = [];
 		for(var i = 0; i < Maps[0].x.length; ++i) {
 			this.blocks.push(new Block(Maps[0].x[i], Maps[0].y[i]));
@@ -67,11 +63,6 @@ var Game = function() {
 
 	this.addPlayer = function(name) {
 		var playerIndex = this.getPlayerIndex();
-		// if(0 === playerIndex) {
-		// 	this.players[playerIndex] = new Player(100, 300, name);
-		// } else {
-		// 	this.players[playerIndex] = new Player(1200, 300, name);
-		// }
 		this.players[playerIndex] = new Player(500, 300, name);		// One point for respawn.
 		return playerIndex;
 	}
@@ -125,6 +116,8 @@ var Game = function() {
 	}
 
 	this.createBullet = function(playerIndex, data) {
+
+		if(this.players[playerIndex].ammunition <= 0) return;
 
 		--this.players[playerIndex].ammunition;
 
