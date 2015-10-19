@@ -104,8 +104,7 @@ Crafty.c("Player", {
 				if(undefined !== socket) {
 					socket.emit('RestorePlayerHealth', {
 						id: gameId,
-						powerUpId: powerUpId,
-						name: this.name
+						powerUpId: powerUpId
 					});
 					restore_health_sound.play();
 				}
@@ -114,8 +113,7 @@ Crafty.c("Player", {
 				if(undefined !== socket) {
 					socket.emit('RestorePlayerAmmunition', {
 						id: gameId,
-						powerUpId: powerUpId,
-						name: this.name
+						powerUpId: powerUpId
 					});
 					restore_ammunition_sound.play();
 				}
@@ -124,7 +122,6 @@ Crafty.c("Player", {
 				if(undefined !== socket) {
 				    socket.emit('updatePlayerDirection', {
 				    	id: gameId,
-				    	name: this.name,
 				    	command: data.command,
 				    	direction: data.direction
 				    });
@@ -157,7 +154,6 @@ Crafty.c("Player", {
 			.bind('sendRotationToServer', function(e) {
 				socket.emit('changePlayerRotation', {
 					id: gameId,
-					name: this.name,
 					// rotation: Math.round((180 * (Math.PI / 2 + Math.atan2(e.pageY - this.y - this.radius, e.pageX - this.x - this.radius))) / Math.PI)
 					rotation: Math.round((180 * (Math.PI / 2 + Math.atan2(e.pageY - (this.y + Crafty.viewport.y) - this.radius, e.pageX - (this.x + Crafty.viewport.x) - this.radius))) / Math.PI)
 				});
