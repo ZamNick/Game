@@ -21,7 +21,6 @@ Crafty.c("Bullet", {
 	 * @public
 	 **/
 	init: function() {
-		this.addComponent("2D", "Canvas")
-			.origin('center');
+		this.addComponent("2D", "Canvas");
 	}
 });

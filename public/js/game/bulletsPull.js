@@ -23,6 +23,7 @@ var BulletsPull = function() {
 		var bullet = this.bullets.pop();
 		bullet.addComponent(type);
 		bullet.type = type;
+		bullet.origin('center');
 		return bullet;
 	}
 
