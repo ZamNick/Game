@@ -155,17 +155,7 @@ var Game = function() {
 				// Update bullets position.
 				this.bullets[i].x += this.bullets[i].xspeed;
 				this.bullets[i].y -= this.bullets[i].yspeed;
-
-
-				// Don't allow bullet go out of screen.
-				if(this.bullets[i].x < 0 || 
-				   this.bullets[i].y < 0 || 
-				   this.bullets[i].x > 5000 || 
-				   this.bullets[i].y > 5000) {
-					delete this.bullets[i];
-					this.destroyedBullets.push(i);
-					continue;
-				}
+				
 
 				for(var j = 0; j < this.players.length; ++j) {
 					if(undefined === this.players[j]) continue;
