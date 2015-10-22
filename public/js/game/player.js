@@ -160,9 +160,7 @@ Crafty.c("Player", {
 			})
 			.bind('createBulletOnServer', function() {
 				socket.emit('createBullet', {
-					id: gameId,
-					type: this.weapon.name,
-					owner: this.name
+					id: gameId
 				});
 			})
 			.bind('Die', function() {

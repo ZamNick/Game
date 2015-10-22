@@ -121,9 +121,9 @@ var Game = function() {
 
 		--this.players[playerIndex].ammunition;
 
-		var bullet = new Bullet(data.owner, data.type);
+		var bullet = new Bullet(this.players[playerIndex].name, this.players[playerIndex].weapon.name);
 
-		if('laser_weapon_1' === data.type) {
+		if('laser_weapon_1' === this.players[playerIndex].weapon.name) {
 			bullet.damage = 1;
 		}
 
