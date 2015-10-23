@@ -10,6 +10,9 @@ var Game = function() {
 
 	this.name = '';
 
+	this.width = 0;
+	this.height = 0;
+
 	this.gameWithBot = false;
 
 	this.buttonsPushed = 0;
@@ -32,11 +35,17 @@ var Game = function() {
 	this.updatePlayersId = 0;
 
 	this.setGame = function(io) {
+
 		this.updateBulletsId = this.updateBullets(io);
 		this.generatePowerUpsId = this.generatePowerUps(io);
 		this.updatePlayersId = this.updatePlayers(io);
+
+		this.width = Maps[0].x[0];
+		this.height = Maps[0].y[0];
+
 		this.blocks = [];
-		for(var i = 0; i < Maps[0].x.length; ++i) {
+
+		for(var i = 1; i < Maps[0].x.length; ++i) {
 			this.blocks.push(new Block(Maps[0].x[i], Maps[0].y[i]));
 		}
 	}
@@ -91,6 +100,8 @@ var Game = function() {
 	this.getObjects = function() {
 		return {
 			id: this.id,
+			width: this.width,
+			height: this.height,
 			ground: this.getTypeOfGround(),
 			players: this.players,
 			blocks: this.blocks

@@ -21,13 +21,13 @@ Crafty.scene('Game', function(data) {
 
 	for(var x = 0; x < 20; ++x) {
 		for(var y = 0; y < 20; ++y) {
-			Crafty.e('BackgroundBlock').__init( x * 222, y * 204, data.ground);
+			Crafty.e('BackgroundBlock').__init(x * 222, y * 204, data.ground);
 		}
 	}
 
 	var bulletsPull = new BulletsPull();
 
-	for(var i = 1; i < data.blocks.length; ++i) {
+	for(var i = 0; i < data.blocks.length; ++i) {
 		Crafty.e('Block').__init(data.blocks[i].x, data.blocks[i].y);
 	}
 
@@ -47,7 +47,7 @@ Crafty.scene('Game', function(data) {
 		}
 	}
 
-	Crafty.viewport.bounds = {min:{x: 0, y: 0}, max:{x: data.blocks[0].x, y: data.blocks[0].y}}; //map size
+	Crafty.viewport.bounds = {min:{ x: 0, y: 0 }, max:{ x: data.width, y: data.height }}; //map size
 	Crafty.viewport.follow(players[playerIndex], 0, 0);
 
 	socket.on('updatePlayers', function(data) {
