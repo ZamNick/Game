@@ -246,8 +246,8 @@ var Game = function() {
 
 	this.createPowerUp = function(io) {
 		var newPowerUp = new PowerUp();
-		newPowerUp.x = Math.floor(Math.random() * 3000);
-		newPowerUp.y = Math.floor(Math.random() * 2000);
+		newPowerUp.x = Math.floor(Math.random() * this.width);
+		newPowerUp.y = Math.floor(Math.random() * this.height);
 		var type = Math.random();
 		if(type <= 0.5) {
 			newPowerUp.type = 'Health';
@@ -261,7 +261,7 @@ var Game = function() {
 				break;
 			}
 		}
-		if(newPowerUp.x + newPowerUp._w <= 3000 && newPowerUp.y + newPowerUp._h <= 2000 && !collisionWithBlock) {
+		if(newPowerUp.x + newPowerUp._w <= this.width && newPowerUp.y + newPowerUp._h <= this.height && !collisionWithBlock) {
 			
 			if(this.destroyedPowerUps.length > 0) {
 				newPowerUp.id = this.destroyedPowerUps[this.destroyedPowerUps.length - 1];
